@@ -2,10 +2,10 @@ require 'rails_helper'
 
  RSpec.describe 'Transactions API' do
    it "can create a new Item" do
-    transaction = create(:transaction)
+    params = item_params = { "payer": "DANNON", "points": 1000, "timestamp": "2020-11-02T14:00:00Z" }
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    post "/api/v1/transactions", headers: headers
+    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction: params)
     created_transaction = Transaction.last
     expect(response.status).to eq(201)
 
