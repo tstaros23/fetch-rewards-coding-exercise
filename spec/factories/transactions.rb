@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :transaction do
-    payer { "MyString" }
-    points { 1 }
+    payer { Faker::Company.name }
+    points { Faker::Number.number(digits: 5) }
   end
 end
