@@ -15,10 +15,8 @@ require 'rails_helper'
 
     transaction_data = created_transaction = JSON.parse(response.body, symbolize_names: true)
 
-    expect(transaction_data[:data]).to have_key(:id)
-    expect(transaction_data[:data]).to have_key(:type)
-    expect(transaction_data[:data]).to have_key(:attributes)
-    expect(transaction_data[:data][:attributes]).to have_key(:payer)
-    expect(transaction_data[:data][:attributes]).to have_key(:points)
+    expect(transaction_data).to have_key(:payer)
+    expect(transaction_data).to have_key(:points)
+    expect(transaction_data).to have_key(:timestamp)
   end
  end

@@ -1,7 +1,7 @@
 class Api::V1::TransactionsController < ApplicationController
   def create
     created_transaction = Transaction.create(transaction_params)
-    balance = render json: TransactionSerializer.new(created_transaction), status: :created
+    balance = render json: TransactionSerializer.format_json(created_transaction), status: :created
   end
 
   private
