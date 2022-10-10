@@ -7,7 +7,7 @@ class Api::V1::TransactionsController < ApplicationController
   def update
     transaction = Transaction.find(params[:id])
     if !transaction.nil?
-      updated_transaction = Transaction.update(transaction_params)
+      updated_transaction = Transaction.update(transaction.id, transaction_params)
       updated_balance = render json: TransactionSerializer.format_json(updated_transaction)
     else
       render json: {errors: {details: "transaction doesn't exist"}}, status: :not_found
