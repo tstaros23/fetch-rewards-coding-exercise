@@ -30,8 +30,6 @@ require 'rails_helper'
 
     patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
 
-    transaction = Transaction.find_by(id: id)
-
     expect(response).to be_successful
     transaction_data = JSON.parse(response.body, symbolize_names: true)
     expect(response.status).to eq(200)
