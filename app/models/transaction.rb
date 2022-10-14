@@ -11,6 +11,7 @@ class Transaction < ApplicationRecord
     wip = order_transactions.map do |transaction|
       if transaction.points > total
         hash[transaction.payer] -= total
+        total = 0
         break
       else
       hash[transaction.payer] -= transaction.points

@@ -6,4 +6,9 @@ class TransactionSerializer
       "timestamp": transaction.created_at.strftime('%m/%d/%Y')
     }
   end
+
+  def self.spent_json(transactions)
+    transactions.map do |k,v|
+    end
+  end
 end
