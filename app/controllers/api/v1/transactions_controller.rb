@@ -5,14 +5,13 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def update
-    transactions = Transaction.all
-    if !transactions.nil?
-      grouped_transactions = transactions.index_by { |transaction| } transaction[:id]
-      updated_transactions = Transaction.update(grouped_transactions.keys, grouped_transactions.values)
-      render json: TransactionSerializer.format_json(updated_transaction)
-    else
-      render json: {errors: {details: "transaction doesn't exist"}}, status: :not_found
-    end
+    # if !transactions.nil?
+    #   grouped_transactions = transactions.index_by { |transaction| } transaction[:id]
+    #   updated_transactions = Transaction.update(grouped_transactions.keys, grouped_transactions.values)
+    #   render json: TransactionSerializer.format_json(updated_transaction)
+    # else
+    #   render json: {errors: {details: "transaction doesn't exist"}}, status: :not_found
+    # end
   end
   private
     def transaction_params
