@@ -5,9 +5,9 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def update
-    transactions = Transaction.spend_points(params[:points])
-    spent = TransactionSerializer.spent_json(transactions)
-    require "pry"; binding.pry
+    updated_values = Transaction.spend_points(params[:points])
+    #update where transaction has key in updated_values
+    spent = render json: TransactionSerializer.spent_json(updated_values)
     # if !transactions.nil?
     #   grouped_transactions = transactions.index_by { |transaction| } transaction[:id]
     #   updated_transactions = Transaction.update(grouped_transactions.keys, grouped_transactions.values)
@@ -18,6 +18,6 @@ class Api::V1::TransactionsController < ApplicationController
   end
   private
     def transaction_params
-      params.require(:transaction).permit(:payer, :points)
+      params.permit(:payer, :points,)
     end
 end

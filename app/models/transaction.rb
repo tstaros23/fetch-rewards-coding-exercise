@@ -21,6 +21,8 @@ class Transaction < ApplicationRecord
     hash
   end
 end
+
+#make a where statement in model that tells when to update all. then call then call it in the controller and render it to json
 # wip = order_transactions.map do |transaction|
 #   if transaction.points > total
 #     hash[transaction.payer] -= total - transaction.points
