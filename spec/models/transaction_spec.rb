@@ -32,4 +32,17 @@ describe Transaction, type: :model do
 
     expect(Transaction.spend_points(1000)).to eq(expected)
   end
+
+  it "can update points" do
+    transactions = [transaction_1 = Transaction.create!(payer: "DANNON", points: 200, created_at: '2022/10/11'),
+    transaction_2 = Transaction.create!(payer: "DANNON", points: -50, created_at: '2022/10/12'),
+    transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')]
+
+    expected = [
+      transaction_1 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/11'),
+      transaction_2 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/12'),
+      transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 150, created_at: '2022/10/13')
+    ]
+    expect(Transaction.batch_update(transactions)).to eq(expected)
+  end
 end
