@@ -11,7 +11,7 @@ class TransactionSerializer
   end
 
   def self.spent_json(transactions)
-    transactions.map do |k,v|
+    transactions[1].map do |k,v|
       {
         "payer": k,
         "points": v

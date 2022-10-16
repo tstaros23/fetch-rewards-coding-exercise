@@ -8,17 +8,20 @@ class Transaction < ApplicationRecord
   def self.spend_points(points)
     hash = Hash.new(0)
     total = points
+    array = []
     wip = order_transactions.map do |transaction|
       if transaction.points > total
         hash[transaction.payer] -= total
         total = 0
+        array << Transaction.find(transaction.id)
         break
       else
       hash[transaction.payer] -= transaction.points
         total -= transaction.points
+        array << Transaction.find(transaction.id)
       end
     end
-    hash
+    return array, hash
   end
 end
 
