@@ -20,9 +20,9 @@ describe Transaction, type: :model do
     transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')
     transaction_4 = Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')
 
-    expected = [
-      {payer: "DANNON", points: -150},
-      {payer: "MILLER COORS", points: -850}
+    expected = [[transaction_1, transaction_2, transaction_3],
+      {"DANNON" => -150,
+      "MILLER COORS" => -850}
     ]
     #store hash number values
     #iterate through ordered transactions payed points until total points to spend goes to zero
@@ -31,6 +31,5 @@ describe Transaction, type: :model do
     # only spend until total becomes zero and then stop
 
     expect(Transaction.spend_points(1000)).to eq(expected)
-
   end
 end
