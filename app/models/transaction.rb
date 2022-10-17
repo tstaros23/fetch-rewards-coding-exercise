@@ -25,6 +25,11 @@ class Transaction < ApplicationRecord
   end
 
   def self.sum_transactions(transactions)
+    transactions[1].select do |k,v|
+      if k.include?(transactions[0].last[:payer])
+        transactions[0].last[:points] += v
+      end
+    end
   end
 end
 #make a where statement in model that tells when to update all. then call then call it in the controller and render it to json
