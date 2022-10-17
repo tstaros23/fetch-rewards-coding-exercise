@@ -24,11 +24,6 @@ describe Transaction, type: :model do
       {"DANNON" => -150,
       "MILLER COORS" => -850}
     ]
-    #store hash number values
-    #iterate through ordered transactions payed points until total points to spend goes to zero
-    #positive numbers become negative and negative become positive when adding hash values.
-    # each time reward points are spent, the total reward points decreases.
-    # only spend until total becomes zero and then stop
 
     expect(Transaction.spend_points(1000)).to eq(expected)
   end
@@ -37,12 +32,14 @@ describe Transaction, type: :model do
     transactions = [[transaction_1 = Transaction.create!(payer: "DANNON", points: 200, created_at: '2022/10/11'),
     transaction_2 = Transaction.create!(payer: "DANNON", points: -50, created_at: '2022/10/12'),
     transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')], {"DANNON" => -150,
-    "MILLER COORS" => -850}]
+    "MILLER COORS" => -850},
+    transaction_4 = Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')]
 
-    expected = [transaction_1 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/11'),
-    transaction_2 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/12'),
-    transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 150, created_at: '2022/10/13')]
+    Transaction.sum_and_update_transactions(transactions)
 
-    expect(Transaction.sum_transactions(transactions)).to eq(expected)
+    expect(transaction_1.points).to eq(0)
+    expect(transaction_2.points).to eq(0)
+    expect(transaction_3.points).to eq(150)
+    expect(transaction_4.points).to eq(1000)
   end
 end
