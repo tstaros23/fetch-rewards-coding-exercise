@@ -8,11 +8,7 @@ class Api::V1::TransactionsController < ApplicationController
     updated_transactions = Transaction.spend_points(params[:points])
     #update where transaction has key in updated_values
     spent = render json: TransactionSerializer.spent_json(updated_transactions)
-    grouped_transactions = updated_transactions[0].index_by do |transaction|
-      transaction[:id]
-    end
-    # pass these transactions into the batch update method that updates  
-    require "pry"; binding.pry
+    # pass these transactions into the batch update method that updates
     # if !transactions.nil?
     #   grouped_transactions = transactions.index_by { |transaction| } transaction[:id]
     #   updated_transactions = Transaction.update(grouped_transactions.keys, grouped_transactions.values)

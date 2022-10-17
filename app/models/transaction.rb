@@ -24,11 +24,8 @@ class Transaction < ApplicationRecord
     return array, hash
   end
 
-  # def self.batch_update(transactions)
-  #   grouped_transactions = transactions.index_by do |transaction|
-  #     transaction[:id]
-  #   end
-  # end
+  def self.sum_transactions(transactions)
+  end
 end
 #make a where statement in model that tells when to update all. then call then call it in the controller and render it to json
 # wip = order_transactions.map do |transaction|
