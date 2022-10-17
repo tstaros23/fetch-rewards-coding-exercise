@@ -28,6 +28,7 @@ class Transaction < ApplicationRecord
     transactions[1].select do |k,v|
       if k.include?(transactions[0].last[:payer])
         transactions[0].last[:points] += v
+        transaction = Transaction.update(transactions[0].last.id, points: transactions[0].last[:points])
       end
     end
   end
