@@ -33,12 +33,14 @@ describe Transaction, type: :model do
     transaction_2 = Transaction.create!(payer: "DANNON", points: -50, created_at: '2022/10/12'),
     transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')], {"DANNON" => -150,
     "MILLER COORS" => -850}]
-
+    # have 6 transactions
+    # spend points till we run out for the first 3 updated transactions in this case.
+    # remainder for the last of the updated transactions
+    # the ones before it, will have zero points and those i want to update all of them to zero
     Transaction.sum_and_update_transactions(transactions)
 
     expect(transaction_1.points).to eq(0)
     expect(transaction_2.points).to eq(0)
     expect(transaction_3.points).to eq(150)
-    expect(transaction_4.points).to eq(1000)
   end
 end

@@ -25,7 +25,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.sum_and_update_transactions(transactions)
-    # array = []
+    array = []
     transactions[1].select do |k,v|
       if k.include?(transactions[0].last[:payer])
         transactions[0].last[:points] += v
