@@ -5,8 +5,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def update
-    updated_transactions = Transaction.spend_points(params[:points])
-    Transaction.sum_and_update_transactions(updated_transactions)
+    updated_transactions = Transaction.spend_points_and_update_sum(params[:points])
     spent = render json: TransactionSerializer.spent_json(updated_transactions)
   end
   private
