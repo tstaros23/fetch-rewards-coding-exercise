@@ -4,7 +4,7 @@ require 'rails_helper'
    it "can create a new Transaction" do
     transaction_params = {
                           "payer": "DANNON",
-                          "points": 1000,
+                          "points": 1000
                           }
     headers = {"CONTENT_TYPE" => "application/json"}
 
@@ -31,7 +31,38 @@ require 'rails_helper'
     patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
 
     expect(response).to be_successful
-    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    transaction_data = JSON.parse(response.body, symbolize_names: true)[0]
     expect(response.status).to eq(200)
+
+    expect(transaction_data).to have_key(:payer)
+    expect(transaction_data).to have_key(:points)
+  end
+
+  it "does not have points params when updating" do
+    transaction_1 = Transaction.create!(payer: "DANNON", points: 200, created_at: '2022/10/11')
+    transaction_2 = Transaction.create!(payer: "DANNON", points: -50, created_at: '2022/10/12')
+    transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')
+    transaction_4 = Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')
+
+    params = nil
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
+
+    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    expect(response.status).to eq(404)
+
+    expect(transaction_data[:errors][:details]).to eq("user has no points to spend")
+  end
+  it "does not have transactions when updating" do
+    params = {"points": 1000}
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
+
+    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    expect(response.status).to eq(404)
+
+    expect(transaction_data[:errors][:details]).to eq("transaction doesn't exist")
   end
  end

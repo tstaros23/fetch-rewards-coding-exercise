@@ -35,11 +35,7 @@ describe Transaction, type: :model do
 
     transactions = Transaction.all
     expect(transactions.first.points).to eq(200)
-    #hash[payer] = -200
     expect(transactions.second.points).to eq(-50)
-    #hash[payer] -= (-50)
-    #hash[payer] = -150
-    #transaction.points -= transaction.points (-50)
     expect(transactions.third.points).to eq(1000)
     expect(transactions.fourth.points).to eq(1000)
 
