@@ -5,8 +5,15 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def update
-    updated_transactions = Transaction.spend_points_and_update_sum(params[:points])
-    spent = render json: TransactionSerializer.spent_json(updated_transactions)
+    transactions = Transaction.all
+    if !params[:points].nil? && !transactions.empty?
+      updated_transactions = Transaction.spend_points_and_update_sum(params[:points])
+      spent = render json: TransactionSerializer.spent_json(updated_transactions)
+    elsif params[:points].nil?
+      render json: {errors: {details: "user has no points to spend"}}, status: :not_found
+    elsif transactions.empty?
+      render json: {errors: {details: "transaction doesn't exist"}}, status: :not_found
+    end
   end
   private
     def transaction_params
