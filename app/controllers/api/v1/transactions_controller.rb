@@ -1,18 +1,25 @@
 class Api::V1::TransactionsController < ApplicationController
+  def index
+    transactions = Transaction.all
+    return render json: {} if transactions.nil?
+    render json: TransactionSerializer.balance_json(transactions)
+  end
+
   def create
-    created_transaction = Transaction.create(transaction_params)
-    balance = render json: TransactionSerializer.format_json(created_transaction), status: :created
+    if params["payer"].nil? || params["points"].nil?
+      render json: {errors: {details: "Field missing"}}, status: :bad_request
+    else
+      created_transaction = Transaction.create(transaction_params)
+      balance = render json: TransactionSerializer.format_json(created_transaction), status: :created
+    end
   end
 
   def update
-    transactions = Transaction.all
-    if !params[:points].nil? && !transactions.empty?
+    if params[:points].nil? || Transaction.all.empty?
+      render json: {errors: {details: "Field missing"}}, status: :bad_request
+    else
       updated_transactions = Transaction.spend_points_and_update_sum(params[:points])
-      spent = render json: TransactionSerializer.spent_json(updated_transactions)
-    elsif params[:points].nil?
-      render json: {errors: {details: "user has no points to spend"}}, status: :not_found
-    elsif transactions.empty?
-      render json: {errors: {details: "transaction doesn't exist"}}, status: :not_found
+      render json: TransactionSerializer.spent_json(updated_transactions)
     end
   end
   private
