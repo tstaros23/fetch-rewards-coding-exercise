@@ -1,4 +1,10 @@
 class Api::V1::TransactionsController < ApplicationController
+  def index
+    transactions = Transaction.all
+    return render json: {} if transactions.nil?
+    render json: TransactionSerializer.balance_json(transactions)
+  end
+
   def create
     created_transaction = Transaction.create(transaction_params)
     balance = render json: TransactionSerializer.format_json(created_transaction), status: :created
@@ -8,7 +14,7 @@ class Api::V1::TransactionsController < ApplicationController
     transactions = Transaction.all
     if !params[:points].nil? && !transactions.empty?
       updated_transactions = Transaction.spend_points_and_update_sum(params[:points])
-      spent = render json: TransactionSerializer.spent_json(updated_transactions)
+      render json: TransactionSerializer.spent_json(updated_transactions)
     elsif params[:points].nil?
       render json: {errors: {details: "user has no points to spend"}}, status: :not_found
     elsif transactions.empty?
