@@ -18,6 +18,43 @@ require 'rails_helper'
     expect(transaction_data).to have_key(:points)
     expect(transaction_data).to have_key(:timestamp)
   end
+   it "does not create a new transaction if any or all of the fields are missing" do
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    transaction_params = {
+                          "payer": "DANNON",
+                          "points": nil
+                        }
+
+    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction_params)
+
+    expect(response.status).to eq(400)
+    expect(Transaction.all.count).to eq(0)
+    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    expect(transaction_data[:errors][:details]).to eq("Field missing")
+
+    transaction_params = {
+                          "payer": nil,
+                          "points": 1000
+                        }
+    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction_params)
+
+    expect(response.status).to eq(400)
+    expect(Transaction.all.count).to eq(0)
+    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    expect(transaction_data[:errors][:details]).to eq("Field missing")
+
+    transaction_params = {
+                          "payer": nil,
+                          "points": nil
+                        }
+    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction_params)
+
+    expect(response.status).to eq(400)
+    expect(Transaction.all.count).to eq(0)
+    transaction_data = JSON.parse(response.body, symbolize_names: true)
+    expect(transaction_data[:errors][:details]).to eq("Field missing")
+  end
 
   it "can spend reward points" do
     transaction_1 = Transaction.create!(payer: "DANNON", points: 200, created_at: '2022/10/11')
