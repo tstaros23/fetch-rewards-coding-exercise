@@ -7,17 +7,22 @@ class Transaction < ApplicationRecord
 
   def self.spend_points_and_update_sum(points)
     hash = Hash.new(0)
-    total = points
+
     order_transactions.map do |transaction|
-      if transaction.points > total
-        hash[transaction.payer] -= total
-        total = 0
+      if transaction.points > points
+        hash[transaction.payer] -= points
+        points += hash[transaction.payer]
         Transaction.find(transaction.id).update(points: (transaction.points + hash[transaction.payer]) )
         break
+      elsif transaction.points < points && transaction.points.negative?
+        hash[transaction.payer] -= transaction.points
+        points -= transaction.points
+        transaction.points -= transaction.points
+        Transaction.find(transaction.id).update(points: transaction.points)
       else
       hash[transaction.payer] -= transaction.points
-        total -= transaction.points
-        Transaction.find(transaction.id).update(points: 0)
+        points -= transaction.points
+        Transaction.find(transaction.id).update(points: (hash[transaction.payer] + transaction.points))
       end
     end
     hash
