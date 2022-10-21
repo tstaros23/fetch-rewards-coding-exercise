@@ -10,8 +10,9 @@ describe Transaction, type: :model do
     transaction_1 = Transaction.create!(payer: "DANNON", points: 200, created_at: '2022/10/12')
     transaction_2 = Transaction.create!(payer: "DANNON", points: -50, created_at: '2022/10/11')
     transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')
+    transaction_4 = Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')
 
-    expect(Transaction.order_transactions).to eq([transaction_2, transaction_1, transaction_3])
+    expect(Transaction.order_transactions).to eq([transaction_2, transaction_1, transaction_3, transaction_4])
   end
 
   it "can spend points" do
@@ -46,5 +47,19 @@ describe Transaction, type: :model do
     expect(transactions.second.points).to eq(0)
     expect(transactions.third.points).to eq(150)
     expect(transactions.fourth.points).to eq(1000)
+  end
+
+  it "can add up the sum all of the transactions" do
+    transactions = [Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/11'),
+    Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/12'),
+    Transaction.create!(payer: "MILLER COORS", points: 150, created_at: '2022/10/13'),
+    Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')]
+
+    expected = {
+      payer: "DANNON", points: 1000,
+      payer: "MILLER COORS", points: 150
+    }
+
+    expect(Transaction.add_sum_of_points(transactions)).to eq(expected)
   end
 end
