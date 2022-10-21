@@ -75,5 +75,18 @@ require 'rails_helper'
     expect(response).to be_successful
     expect(response.status).to eq(200)
     transactions = JSON.parse(response.body, symbolize_names: true)
+
+    expect(transactions.count).to eq(4)
+  end
+  it "renders an empty hash if there are no transactions" do
+    
+    get '/api/v1/transactions'
+
+    expect(response).to be_successful
+    expect(response.status).to eq(200)
+    transactions = JSON.parse(response.body, symbolize_names: true)
+
+    expect(transactions.count).to eq(0)
+    expect(transactions.empty?).to eq(true)
   end
  end
