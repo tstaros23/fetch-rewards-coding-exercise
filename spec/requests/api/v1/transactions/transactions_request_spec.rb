@@ -8,7 +8,7 @@ require 'rails_helper'
                           }
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction: transaction_params)
+    post "/api/v1/transactions", headers: headers, params: JSON.generate(transaction_params)
     created_transaction = Transaction.last
     expect(response.status).to eq(201)
 
@@ -47,9 +47,9 @@ require 'rails_helper'
     patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
 
     transaction_data = JSON.parse(response.body, symbolize_names: true)
-    expect(response.status).to eq(404)
+    expect(response.status).to eq(400)
 
-    expect(transaction_data[:errors][:details]).to eq("user has no points to spend")
+    expect(transaction_data[:errors][:details]).to eq("Field missing")
   end
 
   it "does not have transactions when updating" do
@@ -59,9 +59,9 @@ require 'rails_helper'
     patch "/api/v1/transactions", headers: headers, params: JSON.generate(params)
 
     transaction_data = JSON.parse(response.body, symbolize_names: true)
-    expect(response.status).to eq(404)
+    expect(response.status).to eq(400)
 
-    expect(transaction_data[:errors][:details]).to eq("transaction doesn't exist")
+    expect(transaction_data[:errors][:details]).to eq("Field missing")
   end
 
   it "can send all point balances" do
@@ -79,7 +79,7 @@ require 'rails_helper'
     expect(transactions.count).to eq(4)
   end
   it "renders an empty hash if there are no transactions" do
-    
+
     get '/api/v1/transactions'
 
     expect(response).to be_successful
