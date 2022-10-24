@@ -7,6 +7,7 @@ class Transaction < ApplicationRecord
 
   def self.spend_points_and_update_sum(points)
     hash = Hash.new(0)
+    points = points.to_i
 
     order_transactions.map do |transaction|
       if transaction.points > points
@@ -26,5 +27,12 @@ class Transaction < ApplicationRecord
       end
     end
     hash
+  end
+
+  def self.add_sum_of_points(transactions)
+  sum = Hash.new(0)
+   transactions.each_with_object(sum) do |obj, sum|
+     sum[obj.payer] += obj.points
+    end
   end
 end
