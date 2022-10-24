@@ -30,12 +30,9 @@ class Transaction < ApplicationRecord
   end
 
   def self.add_sum_of_points(transactions)
-    transactions.map do |transaction|
-      transaction.merge
-      require "pry"; binding.pry
-    # totals = transactions.reduce() do |sums, location|
-    #   require "pry"; binding.pry
-    #   sums.merge(location) { |_, a, b | a + b}
+  sum = Hash.new(0)
+   transactions.each_with_object(sum) do |obj, sum|
+     sum[obj.payer] += obj.points
     end
   end
 end

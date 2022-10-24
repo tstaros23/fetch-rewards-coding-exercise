@@ -56,8 +56,8 @@ describe Transaction, type: :model do
     Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')]
 
     expected = {
-      payer: "DANNON", points: 1000,
-      payer: "MILLER COORS", points: 150
+      "DANNON" => 1000,
+      "MILLER COORS" => 150
     }
 
     expect(Transaction.add_sum_of_points(transactions)).to eq(expected)
