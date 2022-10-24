@@ -112,7 +112,6 @@ require 'rails_helper'
     expect(response).to be_successful
     expect(response.status).to eq(200)
     transactions = JSON.parse(response.body, symbolize_names: true)
-    require "pry"; binding.pry
 
     expect(transactions.count).to eq(2)
   end
