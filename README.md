@@ -27,8 +27,17 @@ Table "transactions" {
 ##
 Setup
 * Clone or Fork this repository
+* Install required Gems utilizing Bundler: <br>
+- In terminal, use Bundler to install any missing Gems. If Bundler is not installed, first run the following command.
+```shell
+$ gem install bundler
+```
+
+- If Bundler is already installed or after it has been installed, run the following command.
+```shell
+$ bundle install
+```
 * From the command line, install gems and set up your DB:
-    * `bundle`
     * `rails db:{create,migrate}`
 * Run the test suite with `bundle exec rspec`
 * Run your development server with `rails s`, to see the application run.
