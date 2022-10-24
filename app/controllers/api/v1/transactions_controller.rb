@@ -1,8 +1,11 @@
 class Api::V1::TransactionsController < ApplicationController
   def index
     transactions = Transaction.all
-    return render json: {} if transactions.nil?
-    render json: TransactionSerializer.balance_json(transactions)
+    if transactions.nil?
+      render json: {}
+    else
+      render json: Transaction.add_sum_of_points(transactions)
+    end
   end
 
   def create

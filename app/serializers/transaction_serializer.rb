@@ -18,12 +18,4 @@ class TransactionSerializer
       }
     end
   end
-
-  def self.balance_json(transactions)
-    transactions.flat_map do |transaction|
-      {
-        "#{transaction.payer}": transaction.points
-      }
-    end
-  end
 end

@@ -104,7 +104,7 @@ require 'rails_helper'
   it "can send all point balances" do
     transaction_1 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/11')
     transaction_2 = Transaction.create!(payer: "DANNON", points: 0, created_at: '2022/10/12')
-    transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 1000, created_at: '2022/10/13')
+    transaction_3 = Transaction.create!(payer: "MILLER COORS", points: 150, created_at: '2022/10/13')
     transaction_4 = Transaction.create!(payer: "DANNON", points: 1000, created_at: '2022/10/14')
 
     get '/api/v1/transactions'
@@ -112,8 +112,9 @@ require 'rails_helper'
     expect(response).to be_successful
     expect(response.status).to eq(200)
     transactions = JSON.parse(response.body, symbolize_names: true)
+    require "pry"; binding.pry
 
-    expect(transactions.count).to eq(4)
+    expect(transactions.count).to eq(2)
   end
   it "renders an empty hash if there are no transactions" do
 
