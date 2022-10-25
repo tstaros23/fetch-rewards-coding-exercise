@@ -41,6 +41,7 @@ $ bundle install
     * `rails db:{drop,create,migrate}`
 * Run the test suite with `bundle exec rspec`
 * Run your development server with `rails s`, to see the application run.
+* To access on your local machine use http://localhost:3000
 ##
 Endpoints
 ----------------------------------------
