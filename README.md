@@ -38,7 +38,7 @@ $ gem install bundler
 $ bundle install
 ```
 * From the command line, install gems and set up your DB:
-    * `rails db:{create,migrate}`
+    * `rails db:{drop,create,migrate}`
 * Run the test suite with `bundle exec rspec`
 * Run your development server with `rails s`, to see the application run.
 ##
