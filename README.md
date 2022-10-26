@@ -49,7 +49,7 @@ Endpoints
 - Add transactions for a specific payer and date
 
 ````ruby
-POST /api/v1/transaction_points
+POST /api/v1/transactions
 
 { "payer": "DANNON", "points": 1000, "timestamp": "2020-11-02T14:00:00Z" }
 
@@ -57,7 +57,7 @@ POST /api/v1/transaction_points
 - Spend points
 - Example: User wants to use 5000 points
 ````ruby
-PATCH /api/v1/transaction_points?points=5000
+PATCH /api/v1/transactions?points=5000
 
 [
   { "payer": "DANNON", "points": -100 },
@@ -67,7 +67,7 @@ PATCH /api/v1/transaction_points?points=5000
 ````
 - Return all payer point balances
 ````ruby
-GET /api/v1/transaction_points
+GET /api/v1/transactions
 
 {
   "DANNON": 1000,
